@@ -1,11 +1,17 @@
 import * as Table from 'cli-table3';
 
 import * as R from 'ramda';
-import { insertUser, bulkInsertLanguages, getAllUsers } from '../db/data-access/queries';
-import { getDataFromUrl }  from '../utils/axios';
+import {
+  insertUser,
+  bulkInsertLanguages,
+  fetchUsersByLocationAndLanguages,
+} from '../db/data-access/queries';
+import { getDataFromUrl } from '../utils/axios';
 
 export const fetchGitHubUser = async (username: string): Promise<void> => {
-  const userResponse: any = await getDataFromUrl(`https://api.github.com/users/${username}`);
+  const userResponse: any = await getDataFromUrl(
+    `https://api.github.com/users/${username}`,
+  );
   console.log('--111---fetchGitHubUser-----', userResponse);
 
   if (!userResponse) {
@@ -16,12 +22,15 @@ export const fetchGitHubUser = async (username: string): Promise<void> => {
     github_id: userResponse.id,
     name: userResponse.name,
     email: userResponse.email,
+    username: userResponse.login,
     public_repos: userResponse.public_repos,
     location: userResponse.location,
-  }
+  };
   const newUser = await insertUser(userPayload); // --TODO-- use try catch
 
-  const userLanguages: any = await getDataFromUrl(`https://api.github.com/users/${username}/repos`);
+  const userLanguages: any = await getDataFromUrl(
+    `https://api.github.com/users/${username}/repos`,
+  );
   // const userLanguages = [{language:'python'}, {language:null}, {language:'html'}, {language:'python'}]
   // const cleanArray = R.reject(R.isNil, userLanguages);
   // const uniqueLanguages = R.uniq(cleanArray);
@@ -29,7 +38,7 @@ export const fetchGitHubUser = async (username: string): Promise<void> => {
   const uniqueLanguages = R.pipe(
     R.map(R.prop('language')),
     R.reject(R.isNil),
-    R.uniq
+    R.uniq,
   )(userLanguages);
 
   const insertLanguagePayload = uniqueLanguages.map((language) => {
@@ -52,16 +61,37 @@ export const fetchGitHubUser = async (username: string): Promise<void> => {
 //   return reposResponse.data;
 // };
 
-export const listAllUsers = async () => {
-  const a = await getAllUsers();
+export const listAllUsers = async ({
+  location,
+  languages,
+}: {
+  location: any;
+  languages: any;
+}) => {
+  console.log('=========', location, languages);
+  const a = await fetchUsersByLocationAndLanguages({ location, languages });
   console.log('----a----', a);
 
   const table = new Table({
-    head: ['Id', 'github_id', 'name', 'email', 'public_repos', 'location'],
-    colWidths: [5, 15, 30, 30, 20, 30],
+    head: [
+      'id',
+      'github_id',
+      'name',
+      'email',
+      'public_repos',
+      'location',
+      'languages',
+    ],
+    colWidths: [5, 10, 15, 20, 20, 20, 40],
+    wordWrap: true,
   });
 
-  const valueArrays = a.map((item:any) => Object.values(item));
+  const valueArrays: any[] = a.map((item: any) =>
+    Object.values(item).map((value) =>
+      Array.isArray(value) ? value.join(', ') : value,
+    ),
+  );
+
   console.log('----valueArrays----', valueArrays);
   table.push(...valueArrays);
 

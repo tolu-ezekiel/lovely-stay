@@ -1,6 +1,8 @@
 // import pgPromise from 'pg-promise';
-import 'dotenv/config'
-const pgp = require('pg-promise')({
+import 'dotenv/config';
+import * as PGP from 'pg-promise';
+
+const pgp = PGP({
   capSQL: true,
 });
 
@@ -10,7 +12,4 @@ const pgp = require('pg-promise')({
 
 const db = pgp(process.env.DATABASE_URL!);
 
-export {
-  db,
-  pgp,
-};
+export { db, pgp };

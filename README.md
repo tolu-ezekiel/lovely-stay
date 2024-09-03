@@ -36,6 +36,13 @@ List users by location: node dist/cli.js --list-location <location>
 List users by location and language: node dist/cli.js --list-location-language <location> <language>
 
 
+npx ts-node src/index.ts list  --languages HTML css java      --location berlin
+
+Update Tasks
+```bash
+npx ts-node src/index.ts update <taskID>  [--title=""] [--description=""] [--priority=""] 
+```
+`[--title=""] [--description=""] [--priority=""] ` Parameters are optional 
 
 
 project-root/

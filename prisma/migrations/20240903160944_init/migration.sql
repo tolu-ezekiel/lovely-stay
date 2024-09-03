@@ -3,10 +3,10 @@ CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "github_id" INTEGER NOT NULL,
     "name" TEXT,
+    "username" TEXT NOT NULL,
     "email" TEXT,
     "public_repos" INTEGER NOT NULL,
     "location" TEXT,
-    "url" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );

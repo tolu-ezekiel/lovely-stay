@@ -8,10 +8,10 @@ export function fetchValidator(commandArgument: any): boolean {
 }
 
 export function listUsetValidator(commandArgument: any): boolean {
-  // if (!commandArgument.username) {
-  //   console.error('username is required');
-  //   return false;
-  // }
+  if (!commandArgument.username) {
+    console.error('username is required');
+    return false;
+  }
 
   return true;
 }
