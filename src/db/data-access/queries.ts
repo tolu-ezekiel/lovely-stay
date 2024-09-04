@@ -36,14 +36,15 @@ export const getUsersByLocationAndLanguages = ({
   languages = [],
 }: ValidatedListUserArgs): Promise<UserByLocationAndLanguages[]> => {
   const query = `
-    SELECT u.id, u.github_id, u.name, u.email, u.public_repos, u.location, ARRAY_AGG(l.language) AS languages
+    SELECT u.id, u.github_id, u.name, u.username, u.email, u.public_repos, u.location,
+    ARRAY_AGG(l.language) AS languages
     FROM users u
     LEFT JOIN languages l ON u.id = l.user_id
     WHERE 
       ${location ? `LOWER(u.location) = LOWER($[location])` : `TRUE`}
-      AND
-      ${languages.length > 0 ? `l.language iLike ANY($[languages])` : `TRUE`}
     GROUP BY u.id
+    HAVING
+      ${languages.length > 0 ? `ARRAY_AGG(LOWER(l.language)) @> $[languages]::text[]` : `TRUE`}
   `;
   return db.any(query, { location, languages });
 };

@@ -19,7 +19,6 @@ export const fetchGitHubUser = async (username: string): Promise<void> => {
   const userResponse: FetchGithubUserResponse | null = await getDataFromUrl(
     `https://api.github.com/users/${username}`,
   );
-  console.log('--111---userResponse-----', userResponse);
 
   if (!userResponse) {
     throw new Error(`No Github user with username ${username}`);
@@ -38,8 +37,6 @@ export const fetchGitHubUser = async (username: string): Promise<void> => {
   const githubUserRepos: FetchGithubRepoResponse[] | null =
     await getDataFromUrl(`https://api.github.com/users/${username}/repos`);
 
-  console.log('--222---githubUserRepos-----', githubUserRepos);
-
   if (githubUserRepos?.length && githubUserRepos.length > 0) {
     const userLanguagePayload = formatLanguagePayload({
       user: newUser,
@@ -54,21 +51,20 @@ export const listUserByLocationAndLanguages = async ({
   location,
   languages,
 }: ValidatedListUserArgs): Promise<string> => {
-  console.log('=========', location, languages);
   const user = await getUsersByLocationAndLanguages({ location, languages });
-  console.log('----a----', user);
 
   const table = new Table({
     head: [
       'id',
       'github_id',
       'name',
+      'username',
       'email',
       'public_repos',
       'location',
       'languages',
     ],
-    colWidths: [5, 10, 15, 20, 20, 20, 40],
+    colWidths: [5, 12, 12, 15, 15, 15, 20, 30],
     wordWrap: true,
   });
 
@@ -84,7 +80,6 @@ export const listUserByLocationAndLanguages = async ({
     }),
   );
 
-  console.log('----valueArrays----', valueArrays);
   table.push(...valueArrays);
   return table.toString();
 };
