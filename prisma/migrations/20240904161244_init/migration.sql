@@ -5,7 +5,7 @@ CREATE TABLE "users" (
     "name" TEXT,
     "username" TEXT NOT NULL,
     "email" TEXT,
-    "public_repos" INTEGER NOT NULL,
+    "public_repos" INTEGER,
     "location" TEXT,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
