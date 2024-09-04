@@ -27,7 +27,7 @@ export const listUsers: CommandModule<object, ListUserArgs> = {
       .check(listUserValidator);
   },
   handler: async (argv: ListUserArgs) => {
-    console.log('List users U+23F3 ...');
+    console.log('List users \u{23F3} ...');
     const { location, languages } = argv as ValidatedListUserArgs;
 
     try {
@@ -38,7 +38,7 @@ export const listUsers: CommandModule<object, ListUserArgs> = {
       console.log(users);
       console.log('Done \u{1F389}');
     } catch (error: Error | any) {
-      console.error(`U+274C ${error.message} U+274C`);
+      console.error(`\u{274C} ${error.message} \u{274C}`);
     }
   },
 };

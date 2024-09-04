@@ -22,8 +22,7 @@ export const fetchGitHubUser = async (username: string): Promise<void> => {
   console.log('--111---userResponse-----', userResponse);
 
   if (!userResponse) {
-    console.log(`U+274C No Github user with username ${username} U+274C`);
-    return;
+    throw new Error(`No Github user with username ${username}`);
   }
 
   const userPayload: CreateUserPayload = {

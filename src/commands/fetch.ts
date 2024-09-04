@@ -18,14 +18,14 @@ export const fetchGithubData: CommandModule<object, FetchGithubArgs> = {
   },
   handler: async (argv: FetchGithubArgs) => {
     console.log(
-      `Fetching Github data for username ${argv.username} U+23F3 ...`,
+      `Fetching Github data for username ${argv.username} \u{23F3} ...`,
     );
 
     try {
       await fetchGitHubUser(argv.username);
       console.log('Done \u{1F389}');
     } catch (error: Error | any) {
-      console.error(`U+274C ${error.message} U+274C`);
+      console.error(`\u{274C} ${error.message} \u{274C}`);
     }
   },
 };
