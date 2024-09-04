@@ -1,4 +1,4 @@
-import { fetchGitHubUser, fetchGitHubUserRepos } from '../src/services/github';
+import { fetchGitHubUser, fetchGitHubUserRepos } from '../src/services/user';
 
 test('fetches GitHub user', async () => {
   const user = await fetchGitHubUser('octocat');

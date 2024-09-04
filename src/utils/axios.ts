@@ -2,7 +2,8 @@ import axios from 'axios';
 
 export const getDataFromUrl = async (url: string) => {
   return new Promise((resolve: any, reject: any) => {
-    axios.get(url)
+    axios
+      .get(url)
       .then((response) => {
         resolve(response.data);
       })
@@ -12,5 +13,5 @@ export const getDataFromUrl = async (url: string) => {
         }
         reject(error);
       });
-  }); 
+  });
 };

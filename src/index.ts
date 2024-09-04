@@ -1,14 +1,10 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { fetchUserGithubData } from './commands/fetch';
-import { listUser } from './commands/list';
+import { fetchGithubData } from './commands/fetch';
+import { listUsers } from './commands/list';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+// eslint-disable-next-line @typescript-eslint/no-unused-expressions, prettier/prettier
 yargs(hideBin(process.argv))
-  .command(fetchUserGithubData)
-  .command(listUser)
-  // .command(listUserAndLocationCommand)
-  // .command(listUserLocationAndLanguageCommand)
+  .command(fetchGithubData)
+  .command(listUsers)
   .help().argv;
-// .help('help')
-// .parse();

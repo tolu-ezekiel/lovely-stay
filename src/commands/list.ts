@@ -1,58 +1,39 @@
-// import { getTaskServiceProvider } from '../bootstrap/task-service.provider';
-// import { ITaskService } from '../interfaces/task-service.interface';
-// import { ITask } from '../interfaces/task.interface';
-// import { CommandArgument } from '../types/command-argument.types';
-// import { TaskPriority } from '../types/task.types';
-// import { getUniqTaskId } from '../util/util';
-// import { listAllUsers } from '../services/user';
-
-// import { listUsetValidator } from '../validators';
-import { listAllUsers } from '../services/github';
-
 import { CommandModule } from 'yargs';
+import { listAllUsers } from '../services/user';
+import { listUserValidator } from '../validators/list.validator';
+import {
+  ListUserArgs,
+  ValidatedListUserArgs,
+} from '../interfaces/list.interface';
 
-interface ListUserArgs {
-  location: string;
-  languages: string[];
-}
-
-export const listUser: CommandModule<object, ListUserArgs> = {
+export const listUsers: CommandModule<object, ListUserArgs> = {
   command: 'list',
   describe: 'List information in the database',
-  builder: {
-    location: {
-      alias: 'l',
-      type: 'string',
-      description: 'User location',
-    },
-    languages: {
-      alias: 'lang',
-      type: 'array',
-      description: 'List of programming languages the user knows',
-      // coerce: (arg: any) => {
-      //   console.log('---typeof-arg--', typeof arg, arg);
-      //   if (typeof arg === 'string') {
-      //     return arg.split(',');
-      //   }
-      //   return arg;
-      // },
-      default: [],
-    },
+  builder: (yargs) => {
+    return yargs
+      .option('location', {
+        alias: 'l',
+        type: 'string',
+        description: 'User location',
+        demandOption: false,
+      })
+      .option('languages', {
+        alias: 'lang',
+        type: 'array',
+        description: 'List of programming languages the user knows',
+        default: [],
+        demandOption: false,
+      })
+      .check(listUserValidator);
   },
-  handler: async (argv: any) => {
+  handler: async (argv: ListUserArgs) => {
     console.log('List all users in the database ...');
-    const { location, languages } = argv;
-    // const commandArgument = argv;
-    // const isValid = listUsetValidator(argv);
-    // if (!isValid) {
-    //   return;
-    // }
+    const { location, languages } = argv as ValidatedListUserArgs;
 
     try {
       const users = await listAllUsers({ location, languages });
       console.log(users);
-
-      // console.log('List all users in the database');
+      console.log('Done');
     } catch (e: Error | any) {
       console.error(e.message);
     }

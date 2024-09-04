@@ -1,39 +1,27 @@
-// import { getTaskServiceProvider } from '../bootstrap/task-service.provider';
-// import { ITaskService } from '../interfaces/task-service.interface';
-// import { ITask } from '../interfaces/task.interface';
-// import { CommandArgument } from '../types/command-argument.types';
-// import { TaskPriority } from '../types/task.types';
-// import { getUniqTaskId } from '../util/util';
-import { fetchGitHubUser } from '../services/github';
-// import { fetchValidator } from '../validators';
 import { CommandModule } from 'yargs';
+import { fetchGitHubUser } from '../services/user';
+import { fetchGithubValidator } from '../validators/fetch.validator';
+import { FetchGithubArgs } from '../interfaces/fetch.interface';
 
-interface FetchUserGithubArgs {
-  username?: string;
-}
-
-export const fetchUserGithubData: CommandModule<object, FetchUserGithubArgs> = {
+export const fetchGithubData: CommandModule<object, FetchGithubArgs> = {
   command: 'fetch',
-  describe: 'Fetch user details from Github', // -- TODO -- pagination
-  builder: {
-    username: {
-      alias: 'u',
-      type: 'string',
-      description: `User's Github username`,
-      demandOption: true,
-    },
+  describe: 'Fetch user details from Github',
+  builder: (yargs) => {
+    return yargs
+      .option('username', {
+        alias: 'u',
+        type: 'string',
+        description: `User's Github username`,
+        demandOption: true,
+      })
+      .check(fetchGithubValidator);
   },
-  handler: async (argv: any) => {
+  handler: async (argv: FetchGithubArgs) => {
     console.log(`Fetch Github user data for username ${argv.username} ...`);
-    // const commandArgument = argv;
-    // const isValid = fetchValidator(argv);
-    // if (!isValid) {
-    //   return;
-    // }
 
     try {
       await fetchGitHubUser(argv.username);
-      // console.log(`Fetched Github user data for ${argv.username}`);
+      console.log('Done');
     } catch (e: Error | any) {
       console.error(e.message);
     }
