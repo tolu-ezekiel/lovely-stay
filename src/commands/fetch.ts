@@ -1,7 +1,7 @@
 import { CommandModule } from 'yargs';
 import { fetchGitHubUser } from '../services/user';
 import { fetchGithubValidator } from '../validators/fetch.validator';
-import { FetchGithubArgs } from '../interfaces/fetch.interface';
+import { FetchGithubArgs } from '../interfaces/user.interface';
 
 export const fetchGithubData: CommandModule<object, FetchGithubArgs> = {
   command: 'fetch',
@@ -17,13 +17,15 @@ export const fetchGithubData: CommandModule<object, FetchGithubArgs> = {
       .check(fetchGithubValidator);
   },
   handler: async (argv: FetchGithubArgs) => {
-    console.log(`Fetch Github user data for username ${argv.username} ...`);
+    console.log(
+      `Fetching Github data for username ${argv.username} U+23F3 ...`,
+    );
 
     try {
       await fetchGitHubUser(argv.username);
-      console.log('Done');
-    } catch (e: Error | any) {
-      console.error(e.message);
+      console.log('Done \u{1F389}');
+    } catch (error: Error | any) {
+      console.error(`U+274C ${error.message} U+274C`);
     }
   },
 };

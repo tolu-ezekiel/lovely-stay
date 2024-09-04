@@ -1,4 +1,4 @@
-import { ListUserArgs } from '../interfaces/list.interface';
+import { ListUserArgs } from '../interfaces/user.interface';
 
 export function listUserValidator(argv: ListUserArgs): boolean {
   if (argv.location && typeof argv.location !== 'string') {

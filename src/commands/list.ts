@@ -1,10 +1,10 @@
 import { CommandModule } from 'yargs';
-import { listAllUsers } from '../services/user';
+import { listUserByLocationAndLanguages } from '../services/user';
 import { listUserValidator } from '../validators/list.validator';
 import {
   ListUserArgs,
   ValidatedListUserArgs,
-} from '../interfaces/list.interface';
+} from '../interfaces/user.interface';
 
 export const listUsers: CommandModule<object, ListUserArgs> = {
   command: 'list',
@@ -27,15 +27,18 @@ export const listUsers: CommandModule<object, ListUserArgs> = {
       .check(listUserValidator);
   },
   handler: async (argv: ListUserArgs) => {
-    console.log('List all users in the database ...');
+    console.log('List users U+23F3 ...');
     const { location, languages } = argv as ValidatedListUserArgs;
 
     try {
-      const users = await listAllUsers({ location, languages });
+      const users = await listUserByLocationAndLanguages({
+        location,
+        languages,
+      });
       console.log(users);
-      console.log('Done');
-    } catch (e: Error | any) {
-      console.error(e.message);
+      console.log('Done \u{1F389}');
+    } catch (error: Error | any) {
+      console.error(`U+274C ${error.message} U+274C`);
     }
   },
 };

@@ -1,24 +1,32 @@
 import * as Table from 'cli-table3';
-
-import * as R from 'ramda';
+import { getDataFromUrl } from '../utils/axios';
+import { formatLanguagePayload } from '../utils/create-language-payload';
+import {
+  CreateUserPayload,
+  ValidatedListUserArgs,
+} from '../interfaces/user.interface';
+import {
+  FetchGithubUserResponse,
+  FetchGithubRepoResponse,
+} from '../interfaces/github-api-response.interface';
 import {
   insertUser,
   bulkInsertLanguages,
-  fetchUsersByLocationAndLanguages,
+  getUsersByLocationAndLanguages,
 } from '../db/data-access/queries';
-import { getDataFromUrl } from '../utils/axios';
 
 export const fetchGitHubUser = async (username: string): Promise<void> => {
-  const userResponse: any = await getDataFromUrl(
+  const userResponse: FetchGithubUserResponse | null = await getDataFromUrl(
     `https://api.github.com/users/${username}`,
   );
-  console.log('--111---fetchGitHubUser-----', userResponse);
+  console.log('--111---userResponse-----', userResponse);
 
   if (!userResponse) {
-    console.log(`No Github user with username ${username}`);
+    console.log(`U+274C No Github user with username ${username} U+274C`);
     return;
   }
-  const userPayload = {
+
+  const userPayload: CreateUserPayload = {
     github_id: userResponse.id,
     name: userResponse.name,
     email: userResponse.email,
@@ -26,51 +34,30 @@ export const fetchGitHubUser = async (username: string): Promise<void> => {
     public_repos: userResponse.public_repos,
     location: userResponse.location,
   };
-  const newUser = await insertUser(userPayload); // --TODO-- use try catch
+  const newUser = await insertUser(userPayload);
 
-  const userLanguages: any = await getDataFromUrl(
-    `https://api.github.com/users/${username}/repos`,
-  );
-  // const userLanguages = [{language:'python'}, {language:null}, {language:'html'}, {language:'python'}]
-  // const cleanArray = R.reject(R.isNil, userLanguages);
-  // const uniqueLanguages = R.uniq(cleanArray);
+  const githubUserRepos: FetchGithubRepoResponse[] | null =
+    await getDataFromUrl(`https://api.github.com/users/${username}/repos`);
 
-  const uniqueLanguages = R.pipe(
-    R.map(R.prop('language')),
-    R.reject(R.isNil),
-    R.uniq,
-  )(userLanguages);
+  console.log('--222---githubUserRepos-----', githubUserRepos);
 
-  const insertLanguagePayload = uniqueLanguages.map((language) => {
-    return { user_id: newUser.id, language };
-  });
-  console.log('----insertLanguagePayload----', insertLanguagePayload);
+  if (githubUserRepos?.length && githubUserRepos.length > 0) {
+    const userLanguagePayload = formatLanguagePayload({
+      user: newUser,
+      githubUserRepos,
+    });
 
-  await bulkInsertLanguages(insertLanguagePayload);
+    await bulkInsertLanguages(userLanguagePayload);
+  }
 };
 
-// export const fetchGitHubUserRepos = async (username: string) => {
-//   const reposResponse = await axios.get(
-//     `https://api.github.com/users/${username}/repos` // ?page=1 per_page=// 30 per page
-//   );
-//   // headers: {
-//   //   "X-GitHub-Api-Version":
-//   //     "2022-11-28",
-//   // },
-//   // return reposResponse.data.map((repo: any) => repo.language).filter(Boolean);
-//   return reposResponse.data;
-// };
-
-export const listAllUsers = async ({
+export const listUserByLocationAndLanguages = async ({
   location,
   languages,
-}: {
-  location: any;
-  languages: any;
-}) => {
+}: ValidatedListUserArgs): Promise<string> => {
   console.log('=========', location, languages);
-  const a = await fetchUsersByLocationAndLanguages({ location, languages });
-  console.log('----a----', a);
+  const user = await getUsersByLocationAndLanguages({ location, languages });
+  console.log('----a----', user);
 
   const table = new Table({
     head: [
@@ -86,14 +73,19 @@ export const listAllUsers = async ({
     wordWrap: true,
   });
 
-  const valueArrays: any[] = a.map((item: any) =>
-    Object.values(item).map((value) =>
-      Array.isArray(value) ? value.join(', ') : value,
-    ),
+  const valueArrays: string[][] = user.map((item: any) =>
+    Object.values(item).map((value) => {
+      if (Array.isArray(value)) {
+        return value.join(', ');
+      } else if (typeof value === 'string') {
+        return value;
+      } else {
+        return String(value);
+      }
+    }),
   );
 
   console.log('----valueArrays----', valueArrays);
   table.push(...valueArrays);
-
   return table.toString();
 };

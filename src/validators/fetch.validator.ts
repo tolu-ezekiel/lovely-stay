@@ -1,4 +1,4 @@
-import { FetchGithubArgs } from '../interfaces/fetch.interface';
+import { FetchGithubArgs } from '../interfaces/user.interface';
 
 export function fetchGithubValidator(argv: FetchGithubArgs): boolean {
   if (typeof argv.username !== 'string' || argv.username.trim() === '') {
