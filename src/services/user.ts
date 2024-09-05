@@ -66,7 +66,7 @@ export const listUserByLocationAndLanguages = async ({
     'location',
     'languages',
   ];
-  const colWidths = [5, 12, 12, 15, 15, 15, 20, 30];
+  const colWidths = [5, 12, 12, 15, 15, 15, 20, 25];
 
   const table = createTable({ records: userRecords, head, colWidths });
   return table;

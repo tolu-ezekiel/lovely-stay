@@ -18,7 +18,7 @@ export const listUsers: CommandModule<object, ListUserArgs> = {
         demandOption: false,
       })
       .option('languages', {
-        alias: 'lang',
+        alias: 'p',
         type: 'array',
         description: 'List of programming languages the user knows',
         default: [],

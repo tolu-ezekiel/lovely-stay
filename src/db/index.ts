@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import * as PGP from 'pg-promise';
+import PGP from 'pg-promise';
 
 const pgp = PGP({
   capSQL: true,

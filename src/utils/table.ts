@@ -1,4 +1,4 @@
-import * as Table from 'cli-table3';
+import Table from 'cli-table3';
 import { createTablePayload } from '../interfaces/user.interface';
 
 export const createTable = ({

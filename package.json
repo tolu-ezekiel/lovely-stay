@@ -9,24 +9,30 @@
   ],
   "scripts": {
     "build": "tsc --project ./tsconfig.json",
+    "start": "nodemon ./dist/src/server.js",
     "migrate:dev": "npx prisma migrate dev --name ${npm_config_name}",
     "migrate:prod": "npx prisma migrate deploy",
-    "old-docker:build:up": "docker compose build && docker compose up",
-    "docker:build:up": "docker compose up --build",
+    "docker:build:up": "docker compose up --build -d",
     "test": "jest"
   },
   "dependencies": {
+    "@types/cors": "^2.8.17",
     "@prisma/client": "^5.19.0",
     "axios": "^1.7.5",
     "cli-table3": "^0.6.5",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "dotenv": "^16.4.5",
+    "helmet": "^6.1.5",
     "eslint": "^9.9.1",
+    "nodemon": "^3.0.1",
     "pg-promise": "^11.9.1",
     "prisma": "^5.19.0",
     "table": "^6.8.2",
     "yargs": "^17.1.1-candidate.0"
   },
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.5.1",
     "@types/pg-promise": "^5.4.3",

@@ -1,4 +1,4 @@
-import * as Table from 'cli-table3';
+import Table from 'cli-table3';
 import { getDataFromUrl } from '../src/utils/axios';
 import { formatLanguagePayload } from '../src/utils/create-language-payload';
 import {
@@ -119,7 +119,7 @@ describe('User Service', () => {
           'location',
           'languages',
         ],
-        colWidths: [5, 12, 12, 15, 15, 15, 20, 30],
+        colWidths: [5, 12, 12, 15, 15, 15, 20, 25],
         wordWrap: true,
       });
       expectedTable.push([
