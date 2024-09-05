@@ -1,6 +1,6 @@
-import * as Table from 'cli-table3';
 import { getDataFromUrl } from '../utils/axios';
 import { formatLanguagePayload } from '../utils/create-language-payload';
+import { createTable } from '../utils/table';
 import {
   CreateUserPayload,
   ValidatedListUserArgs,
@@ -51,35 +51,23 @@ export const listUserByLocationAndLanguages = async ({
   location,
   languages,
 }: ValidatedListUserArgs): Promise<string> => {
-  const user = await getUsersByLocationAndLanguages({ location, languages });
-
-  const table = new Table({
-    head: [
-      'id',
-      'github_id',
-      'name',
-      'username',
-      'email',
-      'public_repos',
-      'location',
-      'languages',
-    ],
-    colWidths: [5, 12, 12, 15, 15, 15, 20, 30],
-    wordWrap: true,
+  const userRecords = await getUsersByLocationAndLanguages({
+    location,
+    languages,
   });
 
-  const valueArrays: string[][] = user.map((item: any) =>
-    Object.values(item).map((value) => {
-      if (Array.isArray(value)) {
-        return value.join(', ');
-      } else if (typeof value === 'string') {
-        return value;
-      } else {
-        return String(value);
-      }
-    }),
-  );
+  const head = [
+    'id',
+    'github_id',
+    'name',
+    'username',
+    'email',
+    'public_repos',
+    'location',
+    'languages',
+  ];
+  const colWidths = [5, 12, 12, 15, 15, 15, 20, 30];
 
-  table.push(...valueArrays);
-  return table.toString();
+  const table = createTable({ records: userRecords, head, colWidths });
+  return table;
 };

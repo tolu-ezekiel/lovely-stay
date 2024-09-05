@@ -8,9 +8,12 @@
     "cli"
   ],
   "scripts": {
+    "build": "tsc --project ./tsconfig.json",
     "migrate:dev": "npx prisma migrate dev --name ${npm_config_name}",
     "migrate:prod": "npx prisma migrate deploy",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "old-docker:build:up": "docker compose build && docker compose up",
+    "docker:build:up": "docker compose up --build",
+    "test": "jest"
   },
   "dependencies": {
     "@prisma/client": "^5.19.0",
@@ -20,7 +23,6 @@
     "eslint": "^9.9.1",
     "pg-promise": "^11.9.1",
     "prisma": "^5.19.0",
-    "ramda": "^0.30.1",
     "table": "^6.8.2",
     "yargs": "^17.1.1-candidate.0"
   },
@@ -41,22 +43,5 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.4"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }

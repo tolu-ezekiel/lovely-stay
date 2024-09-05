@@ -32,3 +32,9 @@ export interface CreateUserGithubLanguagePayload {
 export interface UserByLocationAndLanguages extends User {
   languages: string[];
 }
+
+export interface createTablePayload {
+  records: any[];
+  head: string[];
+  colWidths: number[];
+}
