@@ -1,78 +1,89 @@
+# Lovelystay command-line application
+
+This is a command-line application to fetch and display Github users and repositories.   
+
+Docker and NodeJs is used to create the database and make sure the database is running while keeping the server container alive for shell commands.
+
+## Tools:
+- Typescript
+- NodeJs
+- PostgreSQL
+- Yargs
+- Prisma
+- pg-promise
+- Docker
+- Eslint
 
 
-npx ts-node src/index.ts --help
+## Installation and Usage
 
-# GitHub User Fetcher
+### Requirement
+Docker and Node.Js
 
-## Setup
+### Env variables
+All values in the `.env` file can be changed to your prefered values.
+```
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+DB_HOST=postgres
+DB_PORT=5432
+POSTGRES_DB=lovely-dev
+DATABASE_URL=postgresql://postgres:password@postgres:5432/lovely-dev
+PORT=3000
+```
 
-1. Clone the repository.
-2. Install dependencies: `npm install`.
-3. Create a PostgreSQL database and update `.env` with your credentials.
-4. Run migrations: `npm run migrate`.
-5. Compile TypeScript: `npm run build`.
+### Run the application
 
-## Setup
+Clone the repository.
 
-1. Clone the repository.
-2. Install dependencies: `npm install`.
-3. Create a PostgreSQL database and update `.env` with your credentials.
-4. Run migrations:
-   ```bash
-   npx typeorm migration:run
+Install dependencies: `npm install`.
+
+Create a `.env` file with your credentials (sample values above).
+
+Start the Docker container, install the dependencies and start the server.
+```sh
+npm run docker:build:up
+```
+
+Connect to the Docker container shell using the container name.
+```sh
+docker exec -it lovely-stay-app-1 sh
+```
+You can confirm your container name by running `docker ps` and replace 'lovely-stay-app-1' with your container name.
 
 
 ## Commands
 
-- Fetch and save a GitHub user: `node dist/cli.js --fetch <username>`
-- List all users: `node dist/cli.js --list`
-- List users by location: `node dist/cli.js --list-location <location>`
-- List users by
-
-
-Fetch and save a GitHub user: node dist/cli.js --fetch <username>
-List all users: node dist/cli.js --list
-List users by location: node dist/cli.js --list-location <location>
-List users by location and language: node dist/cli.js --list-location-language <location> <language>
-
-
-npx ts-node src/index.ts list  --languages HTML css java      --location berlin
-
-Update Tasks
-```bash
-npx ts-node src/index.ts update <taskID>  [--title=""] [--description=""] [--priority=""] 
+-- Help 
+```sh
+npx ts-node src/yargs.ts --help 
 ```
-`[--title=""] [--description=""] [--priority=""] ` Parameters are optional 
+-- Fetch and save a GitHub user
+```sh
+npx ts-node src/yargs.ts fetch --username <username>
+```
+example: `npx ts-node src/yargs.ts fetch --username tolu-ezekiel`
+
+-- List users by location and/or programming languages
+```sh
+npx ts-node src/yargs.ts list --location <location> --languages <language1> <language2> <language3>...
+```
+example: `npx ts-node src/yargs.ts list --location Berlin --languages javascript Typescript`
+Option `languages` accepts multiple strings to represent array of languages
+
+-- Exit the app terminal
+```sh
+exit;
+```
 
 
-project-root/
-│
-├── src/
-│   ├── db/
-│   │   ├── migrations/
-│   │   │   └── 001_create_users_and_languages_tables.sql
-│   │   ├── index.ts
-│   │   └── queries.ts
-│   │
-│   ├── services/
-│   │   ├── githubService.ts
-│   │   └── userService.ts
-│   │
-│   ├── utils/
-│   │   ├── fetch.ts
-│   │   └── types.ts
-│   │
-│   ├── index.ts
-│   └── cli.ts
-│
-├── tests/
-│   ├── db.test.ts
-│   ├── githubService.test.ts
-│   ├── userService.test.ts
-│   └── cli.test.ts
-│
-├── .eslintrc.json
-├── package.json
-├── tsconfig.json
-├── README.md
-└── .env
+## Tests
+To run the test suit run the commands below.
+
+```sh
+npm install
+```
+
+```sh
+$ npm run test
+```
