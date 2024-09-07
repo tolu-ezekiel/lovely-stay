@@ -66,7 +66,7 @@ You can confirm your container name by running `docker ps` and replace 'lovely-s
 ### `help`
 **Description:** Display help content
 ```sh
-npx ts-node src/yargs.ts --help 
+npx node dist/src/yargs.js --help
 ```
 
 ### `fetch`
@@ -79,10 +79,10 @@ npx ts-node src/yargs.ts --help
 | `--username` | `-u`  | string | GitHub username to fetch data for | true     |
 
 ```sh
-npx ts-node src/yargs.ts fetch --username <username>
+npx node dist/src/yargs.js fetch --username <username>
 ```
 **Example Usage:**
-`npx ts-node src/yargs.ts fetch --username tolu-ezekiel`
+`npx node dist/src/yargs.js fetch --username tolu-ezekiel`
 
 
 ### `list`
@@ -96,13 +96,13 @@ npx ts-node src/yargs.ts fetch --username <username>
 | `--languages` | `-p`  | array  | multiple strings to represent array of languages | false    |
 
 ```sh
-npx ts-node src/yargs.ts list --location <location> --languages <language1> <language2> <language3>...
+npx node dist/src/yargs.js list --location <location> --languages <language1> <language2> <language3>...
 ```
 **Example Usage:**
-`npx ts-node src/yargs.ts list --location Berlin --languages javascript Typescript`
+`npx node dist/src/yargs.js list --location Berlin --languages javascript Typescript`
 
 
-### `Exist`
+### `Exit`
 **Description:** Exit the app terminal
 ```sh
 exit;

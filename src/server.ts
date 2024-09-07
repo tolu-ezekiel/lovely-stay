@@ -7,12 +7,8 @@ import swaggerUi from 'swagger-ui-express';
 import logger from './utils/logger';
 import healthCheck from './routes/health-check';
 
-const docPath =
-  process.env.NODE_ENV === 'development'
-    ? '../docs/openapi'
-    : '../../docs/openapi';
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const apiDocument = require(path.join(__dirname, docPath));
+const apiDocument = require(path.join(__dirname, '../docs/openapi'));
 
 const app: Application = express();
 
