@@ -15,8 +15,11 @@ model User {
   email         String?
   public_repos  Int?
   location      String?
+
   languages     Language[]
 
+  @@index([username])
+  @@index([location])
   @@map("users")
 }
 
@@ -27,5 +30,6 @@ model Language {
   user      User   @relation(fields: [user_id], references: [id])
 
   @@unique([user_id, language])
+  @@index([user_id, language])
   @@map("languages")
 }
