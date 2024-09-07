@@ -23,6 +23,7 @@ services:
     environment:
       - PORT=${PORT}
       - DATABASE_URL=${DATABASE_URL}
+      - LOG_LEVEL=${LOG_LEVEL}
     ports:
       - ${PORT}:${PORT}
     depends_on:

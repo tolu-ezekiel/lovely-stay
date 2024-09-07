@@ -5,6 +5,7 @@ import {
   ListUserArgs,
   ValidatedListUserArgs,
 } from '../interfaces/user.interface';
+import logger from '../utils/logger';
 
 export const listUsers: CommandModule<object, ListUserArgs> = {
   command: 'list',
@@ -27,7 +28,7 @@ export const listUsers: CommandModule<object, ListUserArgs> = {
       .check(listUserValidator);
   },
   handler: async (argv: ListUserArgs) => {
-    console.log('List users \u{23F3} ...');
+    logger.info('List users \u{23F3} ...');
     const { location, languages } = argv as ValidatedListUserArgs;
 
     try {
@@ -35,10 +36,10 @@ export const listUsers: CommandModule<object, ListUserArgs> = {
         location,
         languages,
       });
-      console.log(users);
-      console.log('Done \u{1F389}');
+      logger.info(`\n${users}`);
+      logger.info('Done \u{1F389}');
     } catch (error: Error | any) {
-      console.error(`\u{274C} ${error.message} \u{274C}`);
+      logger.error(`\u{274C} ${error.message} \u{274C}`);
     }
   },
 };

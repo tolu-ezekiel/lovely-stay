@@ -30,6 +30,7 @@ DB_PORT=5432
 POSTGRES_DB=lovely-dev
 DATABASE_URL=postgresql://postgres:password@postgres:5432/lovely-dev
 PORT=3000
+LOG_LEVEL=info
 ```
 
 ### Run the application

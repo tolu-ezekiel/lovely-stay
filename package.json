@@ -33,6 +33,7 @@
     "pg-promise": "^11.9.1",
     "prisma": "^5.19.0",
     "table": "^6.8.2",
+    "winston": "^3.10.0",
     "yargs": "^17.1.1-candidate.0"
   },
   "devDependencies": {
