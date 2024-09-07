@@ -15,7 +15,7 @@ Docker and NodeJs is used to create the database and make sure the database is r
 - Eslint
 
 
-## Installation and Usage
+## Installation
 
 ### Requirement
 Docker and Node.Js
@@ -31,6 +31,7 @@ POSTGRES_DB=lovely-dev
 DATABASE_URL=postgresql://postgres:password@postgres:5432/lovely-dev
 PORT=3000
 LOG_LEVEL=info
+NODE_ENV=development
 ```
 
 ### Run the application
@@ -46,6 +47,15 @@ Start the Docker container, install the dependencies and start the server.
 npm run docker:build:up
 ```
 
+### API Specification / documentation
+Visit http://localhost:3000/api-docs for Swagger API documentation
+
+### Health check
+Visit http://localhost:3000/health-check
+
+
+## Usage and Commands
+
 Connect to the Docker container shell using the container name.
 ```sh
 docker exec -it lovely-stay-app-1 sh
@@ -53,26 +63,47 @@ docker exec -it lovely-stay-app-1 sh
 You can confirm your container name by running `docker ps` and replace 'lovely-stay-app-1' with your container name.
 
 
-## Commands
-
--- Help 
+### `help`
+**Description:** Display help content
 ```sh
 npx ts-node src/yargs.ts --help 
 ```
--- Fetch and save a GitHub user
+
+### `fetch`
+**Description:** Fetch and save user details from GitHub.
+
+**Options:**
+
+| Option       | Alias | Type   | Description                       | Required |
+|--------------|-------|--------|-----------------------------------|----------|
+| `--username` | `-u`  | string | GitHub username to fetch data for | true     |
+
 ```sh
 npx ts-node src/yargs.ts fetch --username <username>
 ```
-example: `npx ts-node src/yargs.ts fetch --username tolu-ezekiel`
+**Example Usage:**
+`npx ts-node src/yargs.ts fetch --username tolu-ezekiel`
 
--- List users by location and/or programming languages
+
+### `list`
+**Description:** List users by location and/or programming languages
+
+**Options:**
+
+| Option        | Alias | Type   | Description                                       | Required |
+|-------------- |-------|--------|--------------------------------------------------|----------|
+| `--location`  | `-l`  | string | User location                                    | false    |
+| `--languages` | `-p`  | array  | multiple strings to represent array of languages | false    |
+
 ```sh
 npx ts-node src/yargs.ts list --location <location> --languages <language1> <language2> <language3>...
 ```
-example: `npx ts-node src/yargs.ts list --location Berlin --languages javascript Typescript`
-Option `languages` accepts multiple strings to represent array of languages
+**Example Usage:**
+`npx ts-node src/yargs.ts list --location Berlin --languages javascript Typescript`
 
--- Exit the app terminal
+
+### `Exist`
+**Description:** Exit the app terminal
 ```sh
 exit;
 ```

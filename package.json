@@ -12,6 +12,8 @@
     "node": "20"
   },
   "scripts": {
+    "dev": "NODE_ENV=development LOG_LEVEL=info nodemon src/server.ts --watch",
+    "generate:docs": "openapi-comment-parser . ./docs/openapi.json",
     "build": "tsc --project ./tsconfig.json",
     "start": "nodemon ./dist/src/server.js",
     "migrate:dev": "npx prisma migrate dev --name ${npm_config_name}",
@@ -20,18 +22,22 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/cors": "^2.8.17",
     "@prisma/client": "^5.19.0",
+    "@types/cors": "^2.8.17",
+    "@types/swagger-ui-express": "^4.1.4",
     "axios": "^1.7.5",
     "cli-table3": "^0.6.5",
     "cors": "^2.8.5",
-    "express": "^4.18.2",
     "dotenv": "^16.4.5",
-    "helmet": "^6.1.5",
     "eslint": "^9.9.1",
+    "express": "^4.18.2",
+    "helmet": "^6.1.5",
     "nodemon": "^3.0.1",
+    "openapi-comment-parser": "^1.0.0",
     "pg-promise": "^11.9.1",
     "prisma": "^5.19.0",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.5.0",
     "table": "^6.8.2",
     "winston": "^3.10.0",
     "yargs": "^17.1.1-candidate.0"

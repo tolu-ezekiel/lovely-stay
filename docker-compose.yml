@@ -24,6 +24,7 @@ services:
       - PORT=${PORT}
       - DATABASE_URL=${DATABASE_URL}
       - LOG_LEVEL=${LOG_LEVEL}
+      - NODE_ENV=production
     ports:
       - ${PORT}:${PORT}
     depends_on:
